@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YV English · Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-logo"><h1>YV English</h1><p>Dashboard</p></div>
+  <nav>
+    <button class="nav-item active" data-page="overview" onclick="showPage('overview',this)"><span class="icon">📊</span> Visão Geral</button>
+    <button class="nav-item" data-page="alunos" onclick="showPage('alunos',this)"><span class="icon">👥</span> Alunos</button>
+    <button class="nav-item" data-page="aulas" onclick="showPage('aulas',this)"><span class="icon">📚</span> Diário de Aulas</button>
+    <button class="nav-item" data-page="mensalidades" onclick="showPage('mensalidades',this)"><span class="icon">💰</span> Mensalidades</button>
+  </nav>
+  <div class="sidebar-footer"><button class="btn-ghost" onclick="logout()">🚪 Sair</button></div>
+</aside>
+<div class="main">
+  <div class="topbar">
+    <h2 id="page-title">Visão Geral</h2>
+    <div class="topbar-actions" id="topbar-actions"></div>
+  </div>
+  <div class="content">
+    <div id="page-overview" class="page active">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Alunos Ativos</div><div class="stat-value" id="stat-ativos">–</div></div>
+        <div class="stat-card plum"><div class="stat-label">Aulas este mês</div><div class="stat-value" id="stat-aulas-mes">–</div></div>
+        <div class="stat-card green"><div class="stat-label">Mensalidades pagas</div><div class="stat-value" id="stat-pagas">–</div><div class="stat-sub" id="stat-pagas-sub"></div></div>
+        <div class="stat-card red"><div class="stat-label">Em aberto</div><div class="stat-value" id="stat-abertas">–</div><div class="stat-sub" id="stat-abertas-sub"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>Últimas aulas registradas</h3></div>
+        <table><thead><tr><th>Aluno</th><th>Data</th><th>Matéria</th><th>Status</th></tr></thead>
+        <tbody id="overview-aulas-tbody"><tr><td colspan="4"><div class="empty"><p>Carregando...</p></div></td></tr></tbody></table>
+      </div>
+    </div>
+    <div id="page-alunos" class="page">
+      <div class="filters">
+        <div class="filter-group"><label>Buscar</label><input type="text" id="search-aluno" placeholder="Nome..." oninput="filterAlunos()" style="width:200px"/></div>
+        <div class="filter-group"><label>Status</label><select id="filter-status" onchange="filterAlunos()"><option value="">Todos</option><option value="ativo">Ativo</option><option value="pausado">Pausado</option><option value="cancelado">Cancelado</option></select></div>
+        <div class="filter-group"><label>Nível</label><select id="filter-nivel" onchange="filterAlunos()"><option value="">Todos</option><option value="iniciante">Iniciante</option><option value="intermediario">Intermediário</option><option value="avancado">Avançado</option></select></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>Alunos</h3></div>
+        <table><thead><tr><th>Nome</th><th>Nível</th><th>Plano</th><th>Dias</th><th>Status</th><th>Contato</th><th></th></tr></thead>
+        <tbody id="alunos-tbody"><tr><td colspan="7"><div class="empty"><p>Carregando...</p></div></td></tr></tbody></table>
+      </div>
+    </div>
+    <div id="page-aulas" class="page">
+      <div class="filters">
+        <div class="filter-group"><label>Aluno</label><select id="filter-aula-aluno" onchange="loadAulas()"><option value="">Todos</option></select></div>
+        <div class="filter-group"><label>De</label><input type="date" id="filter-data-inicio" onchange="loadAulas()"/></div>
+        <div class="filter-group"><label>Até</label><input type="date" id="filter-data-fim" onchange="loadAulas()"/></div>
+        <div class="filter-group"><label>&nbsp;</label><button class="btn btn-outline btn-sm" onclick="clearAulaFilters()">Limpar</button></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>Diário de Aulas</h3></div>
+        <table><thead><tr><th>Aluno</th><th>Data</th><th>Matéria</th><th>Resumo</th><th>Status</th><th>Reposição</th><th></th></tr></thead>
+        <tbody id="aulas-tbody"><tr><td colspan="7"><div class="empty"><p>Carregando...</p></div></td></tr></tbody></table>
+      </div>
+    </div>
+    <div id="page-mensalidades" class="page">
+      <div class="filters">
+        <div class="filter-group"><label>Aluno</label><select id="filter-mens-aluno" onchange="loadMensalidades()"><option value="">Todos</option></select></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>Mensalidades</h3></div>
+        <table><thead><tr><th>Aluno</th><th>Mês</th><th>Valor</th><th>Vencimento</th><th>Status</th><th>Forma</th><th></th></tr></thead>
+        <tbody id="mensalidades-tbody"><tr><td colspan="7"><div class="empty"><p>Carregando...</p></div></td></tr></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL ALUNO -->
+<div class="overlay" id="modal-aluno">
+  <div class="modal">
+    <div class="modal-header"><h3 id="modal-aluno-title">Novo Aluno</h3><button class="close-btn" onclick="closeModal('modal-aluno')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Nome *</label><input id="aluno-nome" type="text"/></div>
+        <div class="form-group"><label>Idade</label><input id="aluno-idade" type="number" min="1" max="120"/></div>
+        <div class="form-group"><label>WhatsApp</label><input id="aluno-contato" type="text" placeholder="(21) 99999-9999"/></div>
+        <div class="form-group"><label>Nível *</label><select id="aluno-nivel"><option value="">Selecione</option><option value="iniciante">Iniciante</option><option value="intermediario">Intermediário</option><option value="avancado">Avançado</option></select></div>
+        <div class="form-group"><label>Plano</label><input id="aluno-plano" type="text" placeholder="ex: 2x por semana"/></div>
+        <div class="form-group"><label>Data de Início</label><input id="aluno-data-inicio" type="date"/></div>
+        <div class="form-group"><label>Dias de Aula</label><input id="aluno-dias" type="text" placeholder="ex: seg, qua, sex"/></div>
+        <div class="form-group"><label>Status</label><select id="aluno-status"><option value="ativo">Ativo</option><option value="pausado">Pausado</option><option value="cancelado">Cancelado</option></select></div>
+        <div class="form-group full"><label>Como chegou até você</label><input id="aluno-como" type="text" placeholder="Instagram, indicação de..."/></div>
+        <div class="form-group full"><label>Objetivo com o inglês</label><textarea id="aluno-objetivo"></textarea></div>
+        <div class="form-group full"><label>Observações</label><textarea id="aluno-obs"></textarea></div>
+        <div class="section-divider">💰 Mensalidade fixa</div>
+        <div class="form-group"><label>Valor mensal (R$)</label><input id="aluno-mens-valor" type="number" step="0.01" placeholder="0,00"/></div>
+        <div class="form-group"><label>Dia de vencimento</label><input id="aluno-mens-dia" type="number" min="1" max="31" placeholder="ex: 10"/></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-aluno')">Cancelar</button><button class="btn btn-primary" onclick="saveAluno()">Salvar</button></div>
+  </div>
+</div>
+<!-- MODAL AULA -->
+<div class="overlay" id="modal-aula">
+  <div class="modal">
+    <div class="modal-header"><h3 id="modal-aula-title">Nova Aula</h3><button class="close-btn" onclick="closeModal('modal-aula')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Aluno *</label><select id="aula-aluno-id"></select></div>
+        <div class="form-group"><label>Data da Aula *</label><input id="aula-data" type="date"/></div>
+        <div class="form-group full"><label>Matérias dadas</label><input id="aula-materias" type="text" placeholder="ex: Present perfect, vocabulário de viagens"/></div>
+        <div class="form-group full"><label>Diário / Resumo da aula</label><textarea id="aula-diario" style="min-height:120px"></textarea></div>
+        <div class="form-group"><label>Status</label><select id="aula-status"><option value="realizada">Realizada</option><option value="nao_realizada">Não realizada</option><option value="reposta">Reposta</option></select></div>
+        <div class="form-group"><label>Data de Reposição</label><input id="aula-reposicao" type="date"/></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-aula')">Cancelar</button><button class="btn btn-primary" onclick="saveAula()">Salvar</button></div>
+  </div>
+</div>
+<!-- MODAL MENSALIDADE -->
+<div class="overlay" id="modal-mensalidade">
+  <div class="modal">
+    <div class="modal-header"><h3 id="modal-mens-title">Nova Mensalidade</h3><button class="close-btn" onclick="closeModal('modal-mensalidade')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Aluno *</label><select id="mens-aluno-id"></select></div>
+        <div class="form-group"><label>Mês de referência *</label><input id="mens-mes" type="month"/></div>
+        <div class="form-group"><label>Valor (R$) *</label><input id="mens-valor" type="number" step="0.01" placeholder="0,00"/></div>
+        <div class="form-group"><label>Vencimento *</label><input id="mens-vencimento" type="date"/></div>
+        <div class="form-group"><label>Pago?</label><select id="mens-pago" onchange="togglePagoFields()"><option value="false">Não</option><option value="true">Sim</option></select></div>
+        <div class="form-group" id="mens-forma-group" style="display:none"><label>Forma de Pagamento</label><select id="mens-forma"><option value="">–</option><option value="pix">Pix</option><option value="transferencia">Transferência</option><option value="dinheiro">Dinheiro</option><option value="cartao">Cartão</option><option value="outro">Outro</option></select></div>
+        <div class="form-group" id="mens-datapag-group" style="display:none"><label>Data de Pagamento</label><input id="mens-data-pagamento" type="date"/></div>
+        <div class="form-group full"><label>Observações</label><textarea id="mens-obs"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-mensalidade')">Cancelar</button><button class="btn btn-primary" onclick="saveMensalidade()">Salvar</button></div>
+  </div>
+</div>
+<div class="toast-container" id="toast-container"></div>
+<script src="js/main.js"></script>
+</body>
+</html>

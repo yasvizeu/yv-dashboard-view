@@ -1,0 +1,110 @@
+:root {
+  --cream:  #F5F0E8;
+  --amber:  #C8943A;
+  --amber-light: #E8B86D;
+  --plum:   #5C3D5E;
+  --plum-light: #7A5580;
+  --text:   #2C1F2E;
+  --text-muted: #7A6B7D;
+  --white:  #FFFFFF;
+  --danger: #A13D3D;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--plum);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: radial-gradient(ellipse at 30% 20%, #7A5580 0%, #5C3D5E 50%, #3A2040 100%);
+}
+
+.login-wrap {
+  width: 100%;
+  max-width: 400px;
+  padding: 24px;
+}
+
+.login-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 40px 36px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.login-logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-logo h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: var(--plum);
+}
+
+.login-logo p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.form-group input {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  padding: 10px 14px;
+  border: 1.5px solid #EDE6D6;
+  border-radius: 8px;
+  color: var(--text);
+  outline: none;
+  transition: border 0.15s;
+}
+
+.form-group input:focus { border-color: var(--plum); }
+
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background: var(--plum);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.18s;
+}
+
+.btn-login:hover { background: var(--plum-light); }
+.btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.error-msg {
+  background: #EDCECE;
+  color: #7A1C1C;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
