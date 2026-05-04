@@ -1,13 +1,13 @@
 :root {
-  --cream:  #F5F0E8;
-  --amber:  #C8943A;
-  --amber-light: #E8B86D;
-  --plum:   #5C3D5E;
-  --plum-light: #7A5580;
-  --text:   #2C1F2E;
-  --text-muted: #7A6B7D;
-  --white:  #FFFFFF;
-  --danger: #A13D3D;
+  --cream:       #F5F0E8;
+  --amber:       #C97B3A;
+  --amber-light: #E8956D;
+  --plum:        #3D1F4A;
+  --plum-light:  #5C3D6E;
+  --text:        #2C1F2E;
+  --text-muted:  #7A6B7D;
+  --white:       #FFFFFF;
+  --danger:      #A13D3D;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,7 +19,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: radial-gradient(ellipse at 30% 20%, #7A5580 0%, #5C3D5E 50%, #3A2040 100%);
+  background-image: radial-gradient(ellipse at 30% 20%, #5C3D6E 0%, #3D1F4A 50%, #251030 100%);
 }
 
 .login-wrap {
