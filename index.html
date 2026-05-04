@@ -9,16 +9,22 @@
   <link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
-<aside class="sidebar">
+
+<!-- Botão mobile + overlay (novos) -->
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
   <div class="sidebar-logo"><h1>YV English</h1><p>Dashboard</p></div>
   <nav>
-    <button class="nav-item active" data-page="overview" onclick="showPage('overview',this)"><span class="icon">📊</span> Visão Geral</button>
-    <button class="nav-item" data-page="alunos" onclick="showPage('alunos',this)"><span class="icon">👥</span> Alunos</button>
-    <button class="nav-item" data-page="aulas" onclick="showPage('aulas',this)"><span class="icon">📚</span> Diário de Aulas</button>
-    <button class="nav-item" data-page="mensalidades" onclick="showPage('mensalidades',this)"><span class="icon">💰</span> Mensalidades</button>
+    <button class="nav-item active" data-page="overview" onclick="showPage('overview',this);closeSidebar()"><span class="icon">📊</span> Visão Geral</button>
+    <button class="nav-item" data-page="alunos" onclick="showPage('alunos',this);closeSidebar()"><span class="icon">👥</span> Alunos</button>
+    <button class="nav-item" data-page="aulas" onclick="showPage('aulas',this);closeSidebar()"><span class="icon">📚</span> Diário de Aulas</button>
+    <button class="nav-item" data-page="mensalidades" onclick="showPage('mensalidades',this);closeSidebar()"><span class="icon">💰</span> Mensalidades</button>
   </nav>
   <div class="sidebar-footer"><button class="btn-ghost" onclick="logout()">🚪 Sair</button></div>
 </aside>
+
 <div class="main">
   <div class="topbar">
     <h2 id="page-title">Visão Geral</h2>
@@ -75,6 +81,7 @@
     </div>
   </div>
 </div>
+
 <!-- MODAL ALUNO -->
 <div class="overlay" id="modal-aluno">
   <div class="modal">
@@ -100,6 +107,7 @@
     <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-aluno')">Cancelar</button><button class="btn btn-primary" onclick="saveAluno()">Salvar</button></div>
   </div>
 </div>
+
 <!-- MODAL AULA -->
 <div class="overlay" id="modal-aula">
   <div class="modal">
@@ -117,6 +125,7 @@
     <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-aula')">Cancelar</button><button class="btn btn-primary" onclick="saveAula()">Salvar</button></div>
   </div>
 </div>
+
 <!-- MODAL MENSALIDADE -->
 <div class="overlay" id="modal-mensalidade">
   <div class="modal">
@@ -136,7 +145,18 @@
     <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-mensalidade')">Cancelar</button><button class="btn btn-primary" onclick="saveMensalidade()">Salvar</button></div>
   </div>
 </div>
+
 <div class="toast-container" id="toast-container"></div>
 <script src="js/main.js"></script>
+<script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebar-overlay').classList.toggle('open');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').classList.remove('open');
+  }
+</script>
 </body>
 </html>
