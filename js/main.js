@@ -90,10 +90,10 @@ async function loadOverview() {
     }
     tbody.innerHTML = recentes.map(a => `
       <tr>
-        <td><strong>${a.aluno?.nome ?? '–'}</strong></td>
-        <td>${formatDate(a.data_aula)}</td>
-        <td>${a.materias ?? '–'}</td>
-        <td>${statusAulaBadge(a.status)}</td>
+        <td data-label="Aluno"><strong>${a.aluno?.nome ?? '–'}</strong></td>
+        <td data-label="Data">${formatDate(a.data_aula)}</td>
+        <td data-label="Matéria">${a.materias ?? '–'}</td>
+        <td data-label="Status">${statusAulaBadge(a.status)}</td>
       </tr>
     `).join('');
   } catch (e) { toast('Erro ao carregar visão geral', 'error'); }
@@ -115,18 +115,18 @@ function renderAlunos(list) {
   }
   tbody.innerHTML = list.map(a => `
     <tr>
-      <td>
+      <td data-label="Nome">
         <strong style="cursor:pointer;color:var(--plum)" onclick="viewAluno(${a.id})">${a.nome}</strong>
         ${a.idade ? `<span style="color:var(--text-muted);font-size:0.78rem"> · ${a.idade} anos</span>` : ''}
       </td>
-      <td>${nivelBadge(a.nivel)}</td>
-      <td>${a.plano ?? '–'}</td>
-      <td style="font-size:0.82rem">${a.dias_aula ?? '–'}</td>
-      <td>${statusAlunoBadge(a.status)}</td>
-      <td>
+      <td data-label="Nível">${nivelBadge(a.nivel)}</td>
+      <td data-label="Plano">${a.plano ?? '–'}</td>
+      <td data-label="Dias" style="font-size:0.82rem">${a.dias_aula ?? '–'}</td>
+      <td data-label="Status">${statusAlunoBadge(a.status)}</td>
+      <td data-label="Contato">
         ${a.contato ? `<a href="https://wa.me/55${a.contato.replace(/\D/g, '')}" target="_blank" style="color:var(--success);font-size:0.85rem">📱 ${a.contato}</a>` : '–'}
       </td>
-      <td>
+      <td data-label=" ">
         <button class="btn btn-sm btn-outline" onclick="openModalAluno(${a.id})">✏️</button>
         <button class="btn btn-sm btn-danger" style="margin-left:4px" onclick="deleteAluno(${a.id})">🗑</button>
       </td>
@@ -245,13 +245,13 @@ async function loadAulas() {
     }
     tbody.innerHTML = aulas.map(a => `
       <tr>
-        <td><strong>${a.aluno?.nome ?? '–'}</strong></td>
-        <td>${formatDate(a.data_aula)}</td>
-        <td style="font-size:0.82rem">${a.materias ?? '–'}</td>
-        <td style="font-size:0.82rem;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${a.diario ?? ''}">${a.diario ?? '–'}</td>
-        <td>${statusAulaBadge(a.status)}</td>
-        <td style="font-size:0.82rem">${a.data_reposicao ? formatDate(a.data_reposicao) : '–'}</td>
-        <td>
+        <td data-label="Aluno"><strong>${a.aluno?.nome ?? '–'}</strong></td>
+        <td data-label="Data">${formatDate(a.data_aula)}</td>
+        <td data-label="Matéria" style="font-size:0.82rem">${a.materias ?? '–'}</td>
+        <td data-label="Resumo" style="font-size:0.82rem;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${a.diario ?? ''}">${a.diario ?? '–'}</td>
+        <td data-label="Status">${statusAulaBadge(a.status)}</td>
+        <td data-label="Reposição" style="font-size:0.82rem">${a.data_reposicao ? formatDate(a.data_reposicao) : '–'}</td>
+        <td data-label=" ">
           <button class="btn btn-sm btn-outline" onclick="openModalAula(${a.id})">✏️</button>
           <button class="btn btn-sm btn-danger" style="margin-left:4px" onclick="deleteAula(${a.id})">🗑</button>
         </td>
@@ -325,16 +325,16 @@ async function loadMensalidades() {
     }
     tbody.innerHTML = mens.map(m => `
       <tr>
-        <td><strong>${m.aluno?.nome ?? '–'}</strong></td>
-        <td>${formatMonth(m.mes_referencia)}</td>
-        <td>R$ ${Number(m.valor).toFixed(2)}</td>
-        <td>${formatDate(m.vencimento)}</td>
-        <td>${m.pago
+        <td data-label="Aluno"><strong>${m.aluno?.nome ?? '–'}</strong></td>
+        <td data-label="Mês">${formatMonth(m.mes_referencia)}</td>
+        <td data-label="Valor">R$ ${Number(m.valor).toFixed(2)}</td>
+        <td data-label="Vencimento">${formatDate(m.vencimento)}</td>
+        <td data-label="Status">${m.pago
           ? `<span class="badge badge-green">✓ Pago</span>${m.data_pagamento ? `<br><span style="font-size:0.72rem;color:var(--text-muted)">${formatDate(m.data_pagamento)}</span>` : ''}`
           : `<span class="badge badge-red">Em aberto</span>`}
         </td>
-        <td style="font-size:0.82rem">${m.forma_pagamento ?? '–'}</td>
-        <td>
+        <td data-label="Forma" style="font-size:0.82rem">${m.forma_pagamento ?? '–'}</td>
+        <td data-label=" ">
           ${!m.pago ? `<button class="btn btn-sm btn-amber" onclick="marcarPago(${m.id})">✓ Pagar</button>` : ''}
           <button class="btn btn-sm btn-outline" style="margin-left:4px" onclick="openModalMensalidade(${m.id})">✏️</button>
           <button class="btn btn-sm btn-danger" style="margin-left:4px" onclick="deleteMensalidade(${m.id})">🗑</button>
